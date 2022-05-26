@@ -9,5 +9,12 @@
 </head>
 <body>
     <h1 x-data="{ message: 'Discovering the Alpine.JS framework' }" x-text="message"></h1>
+    <h2> Counter (only for natural integers)</h2>
+    <div x-data="{ count: 0, isPositive() { return this.count > 0  } }">
+        <button x-on:click="count++">Increment</button>
+        <button x-bind:disabled="!isPositive()" x-on:click="count--">Decrement</button>
+            <span x-text="count"></span>
+        
+    </div>
 </body>
 </html>
