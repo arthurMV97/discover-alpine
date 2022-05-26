@@ -6,15 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="getCountries.js"></script>
 </head>
 <body>
     <h1 x-data="{ message: 'Discovering the Alpine.JS framework' }" x-text="message"></h1>
-    <h2> Counter (only for natural integers)</h2>
-    <div x-data="{ count: 0, isPositive() { return this.count > 0  } }">
-        <button x-on:click="count++">Increment</button>
-        <button x-bind:disabled="!isPositive()" x-on:click="count--">Decrement</button>
-            <span x-text="count"></span>
-        
+    <div x-data="{ openCounter: false, openSearchInput: false }">
+
+        <h2 @click="openCounter = !openCounter" style="cursor: pointer"> ➡️ Counter (only for natural integers) </h2>
+         <div x-show="openCounter" @click.outside="openCounter = false">
+            <div x-data="{ count: 0, isPositive() { return this.count > 0  } }">
+                <button x-on:click="count++">Increment</button>
+                <button x-bind:disabled="!isPositive()" x-on:click="count--">Decrement</button>
+                <span x-text="count"></span>
+            </div>
+        </div>
+
+        <h2 @click="openSearchInput = !openSearchInput" style="cursor: pointer">➡️ Search some countries</h2>
+        <div x-show="openSearchInput" @click.outside="openSearchInput = false">
+            <div
+    x-data=loadCountries()
+>
+    <input x-model="search" placeholder="Search...">
+ 
+    <ul >
+        <template x-for="item in filteredCountries" :key="item.name.official">
+            <li x-text="item.name.common"></li>
+        </template>
+    </ul>
+</div>
+        </div>
+    </div>
+               
+            
     </div>
 </body>
 </html>
