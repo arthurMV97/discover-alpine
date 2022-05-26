@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="getCountries.js"></script>
+    <script src="main.js"></script>
+
 </head>
 <body>
     <h1 x-data="{ message: 'Discovering the Alpine.JS framework' }" x-text="message"></h1>
@@ -19,25 +20,33 @@
                 <button x-bind:disabled="!isPositive()" x-on:click="count--">Decrement</button>
                 <span x-text="count"></span>
             </div>
-        </div>
+        </div> 
 
         <h2 @click="openSearchInput = !openSearchInput" style="cursor: pointer">➡️ Search some countries</h2>
         <div x-show="openSearchInput" @click.outside="openSearchInput = false">
-            <div
-    x-data=loadCountries()
->
-    <input x-model="search" placeholder="Search...">
- 
-    <ul >
-        <template x-for="item in filteredCountries" :key="item.name.official">
-            <li x-text="item.name.common"></li>
-        </template>
-    </ul>
-</div>
+        <div x-data="loadCountries()">
+            <input x-model="search" placeholder="Search...">
+            <button @click="reinitializeSearch">Reset</button>
+            <div x-data="handlePopUp()">
+            <ul >
+                <template x-for="item in filteredCountries" :key="item.name.official">
+                    <li><button  x-text="item.name.common" @click="togglePopUp(item)"></button></li>
+                </template>
+            </ul>
+                <div x-show="openPopUp">
+                    <h1 x-text="country.name.common"></h1>
+                    <button @click="togglePopUp()">Close</button>
+                    <img x-bind:src="country.flags.png" x-bind:alt="'Flag of ' + country.name.common">
+                    <p x-text="'There is ' + country.population + ' people living in  ' + country.name.common" ></p>
+                    <p x-text="'The capital of ' + country.name.common + ' is '+ country.capital " ></p>
+                    <p x-text="country.name.common + ' is located in '+ country.subregion " ></p>
+
+
+
+                </div>
+            </div>
+            </div>
         </div>
-    </div>
-               
-            
-    </div>
+    </div>  
 </body>
 </html>
